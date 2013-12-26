@@ -1,0 +1,29 @@
+body {
+    width: 900px;
+    margin: auto
+}
+.test div { padding-left: 40px }
+.test { border-top: 1px solid gray }
+.test input {
+    float: left;
+    margin-top: 12px;
+}
+.test .sum {
+    float: right;
+    display: block;
+    font-weight: bold;
+    font-size: 11px;
+    padding: 2px;
+    width: 60px;
+    margin: 8px 2px 2px 2px;
+    border: 1px solid black;
+    background-color: #e0e090;
+    text-align: right;
+    border-radius: 5px;
+}
+.test input:empty ~ div { display: none }
+.test input:checked ~ div { display: block }
+.test h1 { font-size: 14px }
+.ok { color: green }
+.ko { color: red }
+.tm { color: blue }

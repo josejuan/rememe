@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple JS test **TEMPLATE**</title>
+        <link href="simple-test.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="simple-test.js"></script>
+        <script type="text/javascript">
+            var allTests = [
+                { title: 'Test testing framework'
+                    , enabled: true
+                    , childs: [
+                        { title: 'Show OK message'
+                            , enabled: true
+                            , test: function () { return true }
+                            },
+                    ]
+                },
+            ];
+       </script>
+    </head>
+    <body onload="runTests(allTests)">
+        <div id="testResult">
+        </div>
+    </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rememe Client and Server functional tests</title>
+        <link href="simple-js-test/simple-test.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="rememe-client.js"></script>
+        <script type="text/javascript" src="simple-js-test/simple-test.js"></script>
+        <script type="text/javascript">
+
+           // That funny, one HTML language without that function... :/
+           function toText(html) {
+             var d = document.createElement('div');
+             d.innerHTML = html;
+             return d.textContent;
+           }
+
+           // Service end point
+           var urlService = 'http://shared.computer-mind.com:8181/';
+
+           // Tesing service using correct, icorrect and unvalidated user accounts
+           var okCnx = new RememeClient(urlService, 'test@computer-mind.com', '3', false);
+           var koCnx = new RememeClient(urlService, 'test@computer-mind.com', '4', false);
+           var ooCnx = new RememeClient(urlService, 'tost@computer-mind.com', '5', false);
+
+           // Helper to assert certain behavior
+           function createTest(testObject, testMethod, testData, testAssertion) {
+             return (function () {
+               var rs = null, rx = null;
+               testObject[testMethod]( testData, function (r) { rs = r }, function (x) { rx = x } );
+               if(rx != null)
+                 throw toText(rx.responseText);
+               else {
+                 if(typeof rs === 'object' && testAssertion(rs, rx))
+                   return true;
+                 throw ("Record was returned but has no required data. JSON := " + JSON.stringify(rs));
+               }
+             });
+           }
+
+           // Helpers to assert using each account type
+           function okTest(testMethod, testData, testAssertion) { return createTest(okCnx, testMethod, testData, testAssertion) }
+           function koTest(testMethod, testData, testAssertion) { return createTest(koCnx, testMethod, testData, testAssertion) }
+           function ooTest(testMethod, testData, testAssertion) { return createTest(ooCnx, testMethod, testData, testAssertion) }
+
+       </script>
+        <script type="text/javascript" src="RememeClientServerTest-preaccount.js"></script>
+        <script type="text/javascript" src="RememeClientServerTest-getuserinfoaccountstate.js"></script>
+        <script type="text/javascript" src="RememeClientServerTest-updatinguseraccount.js"></script>
+        <script type="text/javascript" src="RememeClientServerTest-usernotesmanagement.js"></script>
+        <script type="text/javascript" src="RememeClientServerTest-validationuseraccount.js"></script>
+        <script type="text/javascript">
+           var allTests = [
+               { title: 'Pre account'                   , enabled: true, childs: preaccount_Tests },
+               { title: 'Get User Info & Account state' , enabled: true, childs: getuserinfoaccountstate_Tests },
+               { title: 'Updating User Account'         , enabled: true, childs: updatinguseraccount_Tests },
+               { title: 'User notes management'         , enabled: true, childs: usernotesmanagement_Tests },
+               { title: 'Validation User Account'       , enabled: true, childs: validationuseraccount_Tests },
+           ];
+       </script>
+    </head>
+    <body onload="runTests(allTests)">
+        <div id="testResult">
+        </div>
+    </body>
+</html>
