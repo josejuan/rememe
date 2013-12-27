@@ -25,10 +25,14 @@ function RememeClient(url, usr, pwd, async = false) {
             xhr.open('POST', this.url, this.async);
             xhr.onload = // TODO: control network errors (abort, ...)
                 function() {
-                    if(this.status === 200) {
-                        onOk(JSON.parse(this.responseText));
-                    } else {
-                        onKo(this);
+                    if(this.status !== 200)
+                        onKo(this, this.statusText);
+                    else {
+                        var o = JSON.parse(this.responseText);
+                        if(typeof o.error === "number")
+                            onKo(this, [o.description, o.context].join('. '));
+                        else
+                            onOk(o);
                     }
                 };
             xhr.send(JSON.stringify(msg));
